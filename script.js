@@ -7,13 +7,20 @@ const birds = [
   "tripletsparrot",
   "unicornparrot",
 ];
+let plays = 0;
+let numCards = 0;
+let timer = 0;
+
+setInterval(() => {
+  timer++;
+  document.querySelector(".timer").innerHTML = `${timer} seg`;
+}, 1000);
 
 birds.sort(comparador);
-
 welcomeQuestion();
 
 function welcomeQuestion() {
-  let numCards = prompt("Com quantas cartas você quer jogar?");
+  numCards = prompt("Com quantas cartas você quer jogar?");
   while (Number.isInteger(numCards / 2) === false) {
     numCards = prompt("Com quantas cartas você quer jogar?");
   }
@@ -33,7 +40,6 @@ function renderCards(cards) {
 }
 
 function clickHandler(card) {
-  const allCards = document.querySelector(".container").children;
   const cardBird = birds.find((x) => {
     if (card.classList.contains(x)) {
       return x;
@@ -43,6 +49,7 @@ function clickHandler(card) {
     .querySelector(".container")
     .querySelectorAll(".rotate");
 
+  plays++;
   //se o card já foi acertado, não acontecerá nada
   if (card.classList.contains("ok")) {
     return;
@@ -72,11 +79,12 @@ function clickHandler(card) {
       setTimeout(rotate, 1000, element);
     }
   }
+  setTimeout(isItWon, 300);
 }
 
 function rotate(element) {
   element.classList.toggle("rotate");
-  console.log(element);
+
   if (element.classList.contains("rotate")) {
     for (let i = 0, loopLength = birds.length; i < loopLength; i++) {
       if (element.classList.contains(birds[i])) {
@@ -86,6 +94,23 @@ function rotate(element) {
     }
   } else {
     element.querySelector("img").src = `files/front.png`;
+  }
+}
+
+function isItWon() {
+  const allCardsOk = document
+    .querySelector(".container")
+    .querySelectorAll(".ok");
+
+  if (allCardsOk.length === Number(numCards)) {
+    alert(`Você ganhou o jogo em ${plays} jogadas e ${timer} segundos!`);
+    const restartGame = prompt("Gostaria de jogar novamente?");
+    if (restartGame === "sim") {
+      document.querySelector(".container").innerHTML = "";
+      plays = 0;
+      timer = 0;
+      welcomeQuestion();
+    }
   }
 }
 
