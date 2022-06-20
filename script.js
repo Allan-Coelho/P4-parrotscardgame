@@ -22,7 +22,15 @@ welcomeQuestion();
 function welcomeQuestion() {
   numCards = prompt("Com quantas cartas você quer jogar?");
   while (Number.isInteger(numCards / 2) === false) {
-    numCards = prompt("Com quantas cartas você quer jogar?");
+    if (4 <= numCards === true) {
+      numCards = prompt("Digite um número par entre 4 e 14.");
+      continue;
+    }
+    if (numCards <= 14 === true) {
+      numCards = prompt("Digite um número par entre 4 e 14.");
+      continue;
+    }
+    numCards = prompt("Digite um número par entre 4 e 14.");
   }
   createCards(numCards);
 }
